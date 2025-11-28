@@ -1,82 +1,68 @@
-# Lightweight React Template for KAVIA
+# Food Explore Frontend
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A React-based web interface for browsing, searching, and discovering foods, cuisines, and dishes. Built with minimal dependencies, modern Ocean Professional theme, and accessible UI.
 
-## Features
+## Quick Start
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Node.js 18+
+- Install dependencies:
+  npm install
+- Run dev server:
+  npm start
+- Run tests:
+  npm test
+- Build:
+  npm run build
 
-## Getting Started
+The app runs at http://localhost:3000
 
-In the project directory, you can run:
+## Environment Variables
 
-### `npm start`
+Copy .env.example to .env and adjust:
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- REACT_APP_API_BASE: Preferred API base URL (highest priority)
+- REACT_APP_BACKEND_URL: Fallback API base URL
+- REACT_APP_WS_URL: Optional WebSocket URL placeholder
+- REACT_APP_LOG_LEVEL: silent | error | warn | info | debug
+- REACT_APP_FEATURE_FLAGS: JSON or CSV, e.g. {"trends_panel":true} or trends_panel
+- REACT_APP_EXPERIMENTS_ENABLED: JSON array or CSV of experiments
+- REACT_APP_ENABLE_SOURCE_MAPS: true/false
+- REACT_APP_HEALTHCHECK_PATH: optional path to health endpoint
 
-### `npm test`
+## Architecture
 
-Launches the test runner in interactive watch mode.
+- Routing: react-router-dom, centralized at src/router/Routes.jsx
+- Layout: NavBar (brand, links, SearchBar, theme toggle), Footer (optional healthcheck)
+- Theme: CSS variables at src/styles/theme.css (Ocean Professional palette)
+- Components: SearchBar (debounced), Card (image/title/tags)
+- Pages: Home, Browse, SearchResults, CuisineDetail, DishDetail
+- State: Redux Toolkit (uiSlice, foodsSlice) at src/state
+- Services: API client wrapper at src/services/apiClient.js with endpoints at src/services/endpoints.js
+- Feature Flags: src/hooks/useFeatureFlag.js
 
-### `npm run build`
+## API Client
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Base URL resolution order:
+REACT_APP_API_BASE || REACT_APP_BACKEND_URL || '/api'
 
-## Customization
+Implements:
+- getCuisines(params)
+- getDishes(params)
+- searchAll(q)
+- getCuisineById(id)
+- getDishById(id)
 
-### Colors
+## Testing
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+- Framework: Jest + React Testing Library
+- Tests cover routing, SearchBar debounce/submit, Browse filters/pagination, and apiClient success/error paths.
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+```bash
+npm test
 ```
 
-### Components
+## Styling
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
-
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Ocean Professional theme:
+- primary #2563EB, secondary #F59E0B, background #f9fafb, surface #ffffff, text #111827
+- Rounded corners, subtle gradients, accessible focus rings, smooth transitions.
